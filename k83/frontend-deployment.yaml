@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: workshop
+    component: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: workshop
+      component: web
+  template:
+    metadata:
+      labels:
+        app: workshop
+        component: web
+    spec:
+      containers:
+        - name: frontend
+          image: workshop-frontend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+              name: http
+          env:
+            - name: BACKEND_URL
+              value: http://backend-service:3000
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
